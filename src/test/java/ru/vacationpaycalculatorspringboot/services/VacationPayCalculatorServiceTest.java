@@ -28,4 +28,9 @@ class VacationPayCalculatorServiceTest {
     void calculate4() {
         Assertions.assertEquals(10989.76, calculatorService.calculate(new VacationPayCalculator(23000, 14)));
     }
+
+    @Test
+    void calculate5() {
+        Assertions.assertEquals(0, calculatorService.calculate(new VacationPayCalculator(9000, 0)));
+    }
 }
