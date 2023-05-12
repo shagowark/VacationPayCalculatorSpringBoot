@@ -1,13 +1,10 @@
-package ru.vacationpaycalculatorspringboot.services;
+package ru.vacationpaycalculatorspringboot.serviceUtils;
 
 import org.springframework.web.client.RestTemplate;
 
-import java.sql.ResultSet;
 import java.time.LocalDate;
 
 public class HolidayCounter {
-    private static final RestTemplate restTemplate = new RestTemplate();
-    private static final String API_URL = "https://isdayoff.ru/";
     public static int countHolidays(LocalDate firstDate, int numberOfDays){
         int count = 0;
         for (int i = 0; i < numberOfDays; i++){
@@ -21,7 +18,7 @@ public class HolidayCounter {
     }
 
     private static boolean checkIfHoliday(LocalDate date){
-        String answer = restTemplate.getForObject(API_URL + date.toString(), String.class);
+        String answer = HolidayAPIRequester.sendRequestAndGetAnswer(date.toString());
         return answer.equals("1");
     }
 }

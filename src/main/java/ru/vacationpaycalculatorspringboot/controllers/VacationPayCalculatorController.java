@@ -17,7 +17,7 @@ public class VacationPayCalculatorController {
         this.calculatorService = calculatorService;
     }
 
-    //TODO: controller tests; @ModelAttribute?
+    //TODO controller tests; new logic tests (first_day)
     @GetMapping
     public double calculate(@RequestParam("avg_salary") double salary,
                             @RequestParam("number_of_days") int days,
