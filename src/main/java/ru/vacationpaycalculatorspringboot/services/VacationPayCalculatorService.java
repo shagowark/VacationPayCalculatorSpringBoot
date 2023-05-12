@@ -12,17 +12,22 @@ public class VacationPayCalculatorService {
     private static final int DECIMAL_PLACES_ROUND = 2;
     private VacationPayCalculator calculator;
 
-    private void updateCalculator(VacationPayCalculator calculator){
+    private void updateCalculator(VacationPayCalculator calculator) {
         this.calculator = calculator;
     }
 
-    public double calculate(VacationPayCalculator calculator){
+    public double calculate(VacationPayCalculator calculator) {
         updateCalculator(calculator);
+
+        int holidaysCount = 0;
+        if (calculator.getFirstDate() != null) {
+            holidaysCount = HolidayCounter.countHolidays(calculator.getFirstDate(), calculator.getNumberOfVacationDays());
+        }
         double avgDaySalary = calculator.getAvgMonthSalary() / AVG_DAYS_IN_MONTH;
-        return round(avgDaySalary * calculator.getNumberOfVacationDays());
+        return round(avgDaySalary * (calculator.getNumberOfVacationDays() - holidaysCount));
     }
 
-    private double round(double value){
+    private double round(double value) {
         return new BigDecimal(value).setScale(DECIMAL_PLACES_ROUND, RoundingMode.HALF_UP).doubleValue();
     }
 }
