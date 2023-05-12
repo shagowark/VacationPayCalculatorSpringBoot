@@ -19,12 +19,34 @@ class VacationPayCalculatorControllerTest {
 
     //TODO clean code
     @Test
-    void calculate1() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/calculate")).andExpect(status().is4xxClientError());
+    void getCalculateWithoutFirstDay1() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/calculate"))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
-    void calculate2() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/calculate").param("avg_salary",  "29300").param("number_of_days", "10")).andExpect(status().isOk());
+    void getCalculateWithoutFirstDay2() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/calculate")
+                .param("avg_salary",  "29300")
+                .param("number_of_days", "10"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getCalculateWithFirstDay1() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/calculate")
+                .param("avg_salary",  "29300")
+                .param("number_of_days", "10")
+                .param("first_day", "2023-01-02"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getCalculateWithFirstDay2() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/calculate")
+                        .param("avg_salary",  "29300")
+                        .param("number_of_days", "10")
+                        .param("first_day", "20-01-02"))
+                .andExpect(status().is4xxClientError());
     }
 }

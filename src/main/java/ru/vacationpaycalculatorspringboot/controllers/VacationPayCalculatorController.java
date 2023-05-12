@@ -1,7 +1,9 @@
 package ru.vacationpaycalculatorspringboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.vacationpaycalculatorspringboot.models.VacationPayCalculator;
 import ru.vacationpaycalculatorspringboot.services.VacationPayCalculatorService;
 
@@ -24,9 +26,16 @@ public class VacationPayCalculatorController {
                             @RequestParam(value = "first_day", required = false) String firstDay) {
 
         LocalDate firstDate = null;
-        if (firstDay != null){
+
+        if (firstDay != null) {
+            if (!firstDay.matches("\\d{4}\\-\\d{2}\\-\\d{2}")) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
+
             firstDate = LocalDate.parse(firstDay);
         }
-        return calculatorService.calculate(new VacationPayCalculator(salary, days, firstDate));
+
+        return calculatorService.calculate(
+                new VacationPayCalculator(salary, days, firstDate));
     }
 }
